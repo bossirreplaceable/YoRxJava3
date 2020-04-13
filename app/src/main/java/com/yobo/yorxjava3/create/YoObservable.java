@@ -8,7 +8,6 @@ import com.yobo.yorxjava3.map.YoObservableMap;
  * on 2020-04-09
  */
 public abstract class YoObservable<T> implements YoObservableSource<T> {
-
     @Override
     public void subscribe(YoObserver<? super T> yoObserver) {
         subscribeActual(yoObserver);
@@ -21,7 +20,5 @@ public abstract class YoObservable<T> implements YoObservableSource<T> {
     public final <R> YoObservable<R> map(YoFunction<? super T, ? extends R> mapper) {
         return new YoObservableMap<T,R>(this, mapper);
     }
-
     protected abstract void subscribeActual(YoObserver<? super T> observer);
-
 }

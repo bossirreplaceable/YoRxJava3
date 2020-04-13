@@ -1,6 +1,8 @@
 package com.yobo.yorxjava3.map;
 
+import com.yobo.yorxjava3.create.YoEmitter;
 import com.yobo.yorxjava3.create.YoObservable;
+import com.yobo.yorxjava3.create.YoObservableOnSubscribe;
 import com.yobo.yorxjava3.create.YoObserver;
 
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -17,7 +19,7 @@ public class TestMap {
 
     public static void main(String[] args) {
 
-//        testNative();
+        // testNative();
         testYo();
     }
 
@@ -60,15 +62,18 @@ public class TestMap {
         });
     }
 
-    private static void testYo(){
+    private static void testYo() {
 
-        YoObservable o=YoObservable.<Integer>create(s->{
-            s.onNext(1);
-            s.onNext(2);
-            s.onNext(3);
-            s.onComplete();
+        YoObservable o = YoObservable.<Integer> create(new YoObservableOnSubscribe() {
+            @Override
+            public void subscribe(YoEmitter e) {
+                e.onNext(1);
+                e.onNext(2);
+                e.onNext(3);
+                e.onComplete();
+            }
         });
-        YoObservable o1=o.map(new YoFunction<Integer,String>() {
+        YoObservable o1 = o.map(new YoFunction<Integer, String>() {
             @Override
             public String apply(Integer i) {
                 return "ID:" + i;
@@ -98,9 +103,15 @@ public class TestMap {
         });
     }
 
-
     private static void log(String msg) {
         System.out.println(Thread.currentThread().getName() + ":" + msg);
     }
+
+
+
+
+
+
+
 
 }
