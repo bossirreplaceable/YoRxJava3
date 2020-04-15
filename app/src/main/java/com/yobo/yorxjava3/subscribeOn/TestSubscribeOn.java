@@ -5,9 +5,6 @@ import com.yobo.yorxjava3.create.YoObservable;
 import com.yobo.yorxjava3.create.YoObservableOnSubscribe;
 import com.yobo.yorxjava3.create.YoObserver;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -68,11 +65,9 @@ public class TestSubscribeOn {
             s.onNext("B");
             s.onNext("C");
             s.onComplete();
-        }).doOnNext(s -> log("发送->" + s)).subscribeOn(scheduler)
-         .observeOn(Schedulers.io())
-         .map(s -> s + "1")
-         .subscribeOn(Schedulers.newThread())
-         .doOnNext(s -> log("发送1->" + s));
+        }).doOnNext(s -> log("发送->" + s)).subscribeOn(scheduler).observeOn(Schedulers.io())
+                .map(s -> s + "1").subscribeOn(Schedulers.newThread())
+                .doOnNext(s -> log("发送1->" + s));
         o.subscribe(new Observer<String>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -97,15 +92,6 @@ public class TestSubscribeOn {
     }
     //
 
-
-
-
-
-
-
-
-
-
     private static void testYo() {
         YoObservable yo1 = YoObservable.create(new YoObservableOnSubscribe<String>() {
             @Override
@@ -119,7 +105,8 @@ public class TestSubscribeOn {
                 e.onComplete();
             }
         });
-        YoObservable yo2 = yo1.subscribeOn(Executors.newSingleThreadExecutor());
+        YoObservable yo2 = yo1.subscribeOn(Executors.newSingleThreadExecutor())
+                              .observeOn(Executors.newSingleThreadExecutor());
 
         yo2.subscribe(new YoObserver<String>() {
             @Override
@@ -149,3 +136,16 @@ public class TestSubscribeOn {
         System.out.println(Thread.currentThread().getName() + ":" + msg);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

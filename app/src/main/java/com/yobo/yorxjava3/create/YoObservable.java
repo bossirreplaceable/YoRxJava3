@@ -2,6 +2,7 @@ package com.yobo.yorxjava3.create;
 
 import com.yobo.yorxjava3.map.YoFunction;
 import com.yobo.yorxjava3.map.YoObservableMap;
+import com.yobo.yorxjava3.subscribeOn.YoObservableObserveOn;
 import com.yobo.yorxjava3.subscribeOn.YoObservableSubscribeOn;
 
 import java.util.concurrent.Executor;
@@ -29,6 +30,10 @@ public abstract class YoObservable<T> implements YoObservableSource<T> {
 
     public final YoObservable<T> subscribeOn(Executor scheduler) {
         return new YoObservableSubscribeOn<>(this, scheduler);
+    }
+
+    public final YoObservable<T> observeOn(Executor scheduler) {
+        return new YoObservableObserveOn<>(this, scheduler);
     }
 
     protected abstract void subscribeActual(YoObserver<? super T> observer);
