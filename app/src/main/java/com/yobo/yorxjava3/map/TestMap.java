@@ -25,12 +25,12 @@ public class TestMap {
 
     private static void testNative() {
 
-        Observable<Integer> o = Observable.create(s -> {
+        Observable<Integer> o = Observable.<Integer>create(s -> {
             s.onNext(1);
             s.onNext(2);
             s.onNext(3);
             s.onComplete();
-        });
+        }).window(3).flatMap(s->s);
 
         Observable<String> o1 = o.map(new Function<Integer, String>() {
             @Override
